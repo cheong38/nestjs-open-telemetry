@@ -6,7 +6,7 @@ import {
   LoggerProvider,
   SimpleLogRecordProcessor
 } from "@opentelemetry/sdk-logs";
-import { logs, SeverityNumber } from "@opentelemetry/api-logs";
+import { logs } from "@opentelemetry/api-logs";
 
 const loggerProvider = new LoggerProvider()
 loggerProvider.addLogRecordProcessor(
@@ -23,5 +23,4 @@ const sdk = new NodeSDK({
   // }),
   instrumentations: [getNodeAutoInstrumentations()],
 });
-SeverityNumber
 sdk.start();
