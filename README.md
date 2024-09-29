@@ -1,30 +1,8 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Open Telemetry with NestJS
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+NestJS 에서 OpenTelemetry 를 사용하는 예제 코드를 담고 있다.
 
 ## Project setup
 
@@ -58,28 +36,83 @@ $ pnpm run test:e2e
 $ pnpm run test:cov
 ```
 
-## Resources
+## Study
 
-Check out a few resources that may come in handy when working with NestJS:
+### Auto Instrumentation
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+`ppnm start` 로 앱을 실행시켜보면, auto intrumentation 이 되어있는 것을 확인할 수 있다.
+아래와 같은 출력의 로그가 터미널에 출력된다.
 
-## Support
+새로운 터미널 창을 열어 다음 명령어를 실행시킨다.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+$ curl localhost:3000
+```
 
-## Stay in touch
+```
+{
+  resource: {
+    attributes: {
+      'service.name': 'unknown_service:node',
+      'telemetry.sdk.language': 'nodejs',
+      'telemetry.sdk.name': 'opentelemetry',
+      'telemetry.sdk.version': '1.26.0',
+      'process.pid': 18403,
+      'process.executable.name': 'node',
+      'process.executable.path': '/Users/woojin/.nvm/versions/node/v18.17.0/bin/node',
+      'process.command_args': [
+        '/Users/woojin/.nvm/versions/node/v18.17.0/bin/node',
+        '--enable-source-maps',
+        '/Users/woojin/Development/nestjs-open-telemetry/dist/main'
+      ],
+      'process.runtime.version': '18.17.0',
+      'process.runtime.name': 'nodejs',
+      'process.runtime.description': 'Node.js',
+      'process.command': '/Users/woojin/Development/nestjs-open-telemetry/dist/main',
+      'process.owner': 'woojin',
+      'host.name': 'jumpclouds-MacBook-Pro-3.local',
+      'host.arch': 'arm64'
+    }
+  },
+  instrumentationScope: {
+    name: '@opentelemetry/instrumentation-http',
+    version: '0.53.0',
+    schemaUrl: undefined
+  },
+  traceId: '83d5f46705732100caf19098a92b9ecd',
+  parentId: undefined,
+  traceState: undefined,
+  name: 'GET /',
+  id: 'b6d9547a0696b138',
+  kind: 1,
+  timestamp: 1727623164369000,
+  duration: 7517,
+  attributes: {
+    'http.url': 'http://localhost:3000/',
+    'http.host': 'localhost:3000',
+    'net.host.name': 'localhost',
+    'http.method': 'GET',
+    'http.scheme': 'http',
+    'http.target': '/',
+    'http.user_agent': 'curl/8.6.0',
+    'http.flavor': '1.1',
+    'net.transport': 'ip_tcp',
+    'net.host.ip': '::1',
+    'net.host.port': 3000,
+    'net.peer.ip': '::1',
+    'net.peer.port': 60844,
+    'http.status_code': 200,
+    'http.status_text': 'OK',
+    'http.route': '/'
+  },
+  status: { code: 0 },
+  events: [],
+  links: []
+}
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+여러 필드가 있지만 그 중 특기할 만한 필드들을 몇 개 살펴보자.
+`traceId` 가 자동으로 생성되어 할당되어 있다.
+span 용으로 사용될 것이라 추측되는 `parentId` 는 할당되어 있지 않다. 아마 root span 으로 간주될 것으로 보인다.
+`name` 은 현재 span 의 이름이다. 여기서는 `GET /` 이다. http 등의 모듈을 자동으로 hooking 해서 span 을 생성하고 있다.
+`attributes` 에 여러 필드들이 있는데, 이는 span 에 대한 정보를 담고 있다. 여기서는 http 요청에 대한 정보가 담겨있다.
